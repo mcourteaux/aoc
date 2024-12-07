@@ -1,0 +1,5 @@
+*
+!*.jai
+!*.input
+!*.demo-input
+!.gitignore
