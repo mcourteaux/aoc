@@ -14,17 +14,10 @@ walk :: (lines_: []string, start_r: int, start_c: int, init_dir_x: int, init_dir
     }
   }
 
-  #if true {
-    MASK_U :: 0x71;
-    MASK_D :: 0x72;
-    MASK_L :: 0x74;
-    MASK_R :: 0x78;
-  } else {
-    MASK_U :: 0x71;
-    MASK_D :: 0x71;
-    MASK_L :: 0x72;
-    MASK_R :: 0x72;
-  }
+  MASK_U :: 0x81;
+  MASK_D :: 0x82;
+  MASK_L :: 0x84;
+  MASK_R :: 0x88;
 
   dir_to_mask :: (dir_x: int, dir_y: int) -> u8 {
     mask : u8 = 0;
@@ -107,7 +100,8 @@ main :: () {
   num_good_obstacles := 0;
   for row : 0..height-1 {
     for col : 0..width-1 {
-      if (lines_part_1[row][col] & 0x70) && row != curr_r && col != curr_c {
+      if (lines_part_1[row][col] & 0x80)  && !(row == curr_r && col == curr_c)
+      {
         // Guard moved here, let's put a crate, and see if it's any good.
         auto_release_temp();
 

@@ -41,7 +41,8 @@ main :: () {
       return thres;
     }
 
-    search_for_combination :: (intermediate_result: s64, numbers: []s64, index: int, target: s64, $support_concat := false) -> bool {
+    search_for_combination :: (intermediate_result: s64, numbers: []s64,
+                               index: int, target: s64, $support_concat := false) -> bool {
       if index == numbers.count {
         return intermediate_result == target;
       }
@@ -74,14 +75,16 @@ main :: () {
     }
 
     good_no_concat := search_for_combination(0, numbers, 0, target, false);
-    good_with_concat := search_for_combination(0, numbers, 0, target, true);
     if good_no_concat {
-      print("% is good (no concat)\n", line);
+      print("% is good (no concat, and of course with as well)\n", line);
       sum_good_results += target;
-    }
-    if good_with_concat {
-      print("% is good (with concat)\n", line);
       sum_good_results_with_concat += target;
+    } else {
+      good_with_concat := search_for_combination(0, numbers, 0, target, true);
+      if good_with_concat {
+        print("% is good (with concat)\n", line);
+        sum_good_results_with_concat += target;
+      }
     }
   }
   print("sum of good results: %\n", sum_good_results);
