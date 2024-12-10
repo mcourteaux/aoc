@@ -6,7 +6,6 @@
 
 main :: () {
   input := read_entire_file("day-02.input");
-  //input := read_entire_file("/home/martijn/Downloads/Telegram Desktop/day-02-input.txt");
   lines := split(input, "\n");
 
   num_safe := 0;

@@ -60,7 +60,7 @@ walk :: (lines_: []string, start_r: int, start_c: int, init_dir_x: int, init_dir
         num_positions += 1;
       }
       curr_mask := dir_to_mask(dir_x, dir_y);
-      if prev_mask & curr_mask & 0xf {
+      if prev_mask & curr_mask & 0x0f {
         // Loop detected!
         loop = true;
         break;
@@ -72,7 +72,7 @@ walk :: (lines_: []string, start_r: int, start_c: int, init_dir_x: int, init_dir
 }
 
 main :: () {
-  input := read_entire_file("day-06.input");
+  input := read_entire_file(#run replace(#file, ".jai", ".input"));
   while input[input.count - 1] == #char "\n" input.count -= 1;
 
   input_part_1 := copy_string(input);
@@ -100,7 +100,7 @@ main :: () {
   num_good_obstacles := 0;
   for row : 0..height-1 {
     for col : 0..width-1 {
-      if (lines_part_1[row][col] & 0x80)  && !(row == curr_r && col == curr_c)
+      if (lines_part_1[row][col] & 0x80) && !(row == curr_r && col == curr_c)
       {
         // Guard moved here, let's put a crate, and see if it's any good.
         auto_release_temp();
@@ -112,7 +112,6 @@ main :: () {
 
         num_pos, loop := walk(lines, curr_r, curr_c, 0, -1);
         if loop {
-          //print("loop for obstacle at % %\n", row, col);
           num_good_obstacles += 1;
         }
       }

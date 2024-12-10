@@ -74,13 +74,20 @@ main :: () {
       return false;
     }
 
-    good_no_concat := search_for_combination(0, numbers, 0, target, false);
+    REPS :: 1;
+    good_no_concat : bool;
+    for repeat : 1..REPS {
+      good_no_concat = search_for_combination(0, numbers, 0, target, false);
+    }
     if good_no_concat {
       print("% is good (no concat, and of course with as well)\n", line);
       sum_good_results += target;
       sum_good_results_with_concat += target;
     } else {
-      good_with_concat := search_for_combination(0, numbers, 0, target, true);
+      good_with_concat : bool;
+      for repeat : 1..REPS {
+        good_with_concat = search_for_combination(0, numbers, 0, target, true);
+      }
       if good_with_concat {
         print("% is good (with concat)\n", line);
         sum_good_results_with_concat += target;
