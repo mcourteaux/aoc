@@ -8,7 +8,7 @@ PRINT_STONES :: false;
 
 Memoization :: struct {
   STONE_SLOTS :: 10000;
-  BLINK_SLOTS :: 50;
+  BLINK_SLOTS :: 60;
   memory: [STONE_SLOTS][BLINK_SLOTS]s64;
 }
 
@@ -58,6 +58,7 @@ blink :: (stone: s64, times: int) -> s64 {
 }
 
 run_stones :: (input: string, blink_count: int) {
+  t0 := current_time_monotonic();
   numbers := split(input, " ");
   stone_count := 0;
   for num_str : numbers {
@@ -65,7 +66,8 @@ run_stones :: (input: string, blink_count: int) {
     stone_count += blink(num, blink_count);
   }
   if PRINT_STONES print("\n");
-  print("Stones: %\n", stone_count);
+  t1 := current_time_monotonic();
+  print("Stones: %  (% ms)\n", stone_count, to_float64_seconds(t1 - t0) * 1000.0);
 }
 
 main :: () {
