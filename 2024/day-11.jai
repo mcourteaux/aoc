@@ -7,9 +7,9 @@
 PRINT_STONES :: false;
 
 Memoization :: struct {
-  STONE_SLOTS :: 10000;
-  BLINK_SLOTS :: 60;
-  memory: [STONE_SLOTS][BLINK_SLOTS]s64;
+  STONE_SLOTS :: 2000;
+  BLINK_SLOTS :: 800;
+  memory: [BLINK_SLOTS][STONE_SLOTS]s64;
 }
 
 memoization : Memoization;
@@ -21,8 +21,8 @@ blink :: (stone: s64, times: int) -> s64 {
   }
 
   memoize := stone < Memoization.STONE_SLOTS && times < Memoization.BLINK_SLOTS;
-  if memoize && memoization.memory[stone][times] != -1 {
-    return memoization.memory[stone][times];
+  if memoize && memoization.memory[times][stone] != -1 {
+    return memoization.memory[times][stone];
   }
 
   count := 0;
@@ -51,7 +51,7 @@ blink :: (stone: s64, times: int) -> s64 {
   }
 
   if memoize {
-    memoization.memory[stone][times] = count;
+    memoization.memory[times][stone] = count;
   }
 
   return count;
@@ -71,15 +71,20 @@ run_stones :: (input: string, blink_count: int) {
 }
 
 main :: () {
-  // Init memoization
-  for memoization.memory {
-    for * it {
-      <<it = -1;
+  for 0 .. 2 {
+    // Init memoization
+    print("\nClear memoization.\n");
+    for memoization.memory {
+      for * it {
+        <<it = -1;
+      }
     }
-  }
 
-  run_stones("125 17", 6);
-  run_stones("125 17", 25);
-  run_stones("4022724 951333 0 21633 5857 97 702 6", 25);
-  run_stones("4022724 951333 0 21633 5857 97 702 6", 75);
+    run_stones("125 17", 6);
+    run_stones("125 17", 25);
+    run_stones("4022724 951333 0 21633 5857 97 702 6", 25);
+    run_stones("4022724 951333 0 21633 5857 97 702 6", 75);
+    run_stones("4022724 951333 0 21633 5857 97 702 6", 200);
+    run_stones("4022724 951333 0 21633 5857 97 702 6", 400);
+  }
 }
