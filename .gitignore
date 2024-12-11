@@ -3,3 +3,7 @@
 !*.input
 !*.demo-input
 !.gitignore
+
+!*/
+.build
+
