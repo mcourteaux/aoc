@@ -3,6 +3,7 @@
 #import "String";
 #import "Sort";
 #import "Math";
+#load "AOC.jai";
 
 PRINT_STONES :: false;
 

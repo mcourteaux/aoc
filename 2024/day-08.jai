@@ -3,6 +3,7 @@
 #import "String";
 #import "Sort";
 #import "Math";
+#load "AOC.jai";
 
 char_to_freq :: (char: u8) -> int {
   if char >= #char "a" return char - #char "a" + 36;
@@ -11,7 +12,7 @@ char_to_freq :: (char: u8) -> int {
 }
 
 main :: () {
-  input := read_entire_file("day-08.input");
+  input := fetch_puzzle_input();
 
   lines := split(input, "\n");
   if lines[lines.count - 1].count == 0 then lines.count -= 1;

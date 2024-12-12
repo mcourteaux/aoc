@@ -3,9 +3,10 @@
 #import "String";
 #import "Sort";
 #import "Math";
+#load "AOC.jai";
 
 main :: () {
-  input := read_entire_file("day-07.input");
+  input := fetch_puzzle_input();
   while input[input.count - 1] == #char "\n" input.count -= 1;
   lines := split(input, "\n");
 

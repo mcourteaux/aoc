@@ -1,9 +1,7 @@
 *
 !*.jai
-!*.input
-!*.demo-input
 !.gitignore
-
+!*.sh
 !*/
 .build
 

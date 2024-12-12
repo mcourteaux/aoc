@@ -3,9 +3,10 @@
 #import "String";
 #import "Sort";
 #import "Math";
+#load "AOC.jai";
 
 main :: () {
-  input := read_entire_file("day-03.input");
+  input := fetch_puzzle_input();
 
   sum_muls := 0;
   sum_muls_predicated := 0;

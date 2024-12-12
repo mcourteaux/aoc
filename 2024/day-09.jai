@@ -3,7 +3,8 @@
 #import "String";
 #import "Sort";
 #import "Math";
-#import "Compiler";
+
+#load "AOC.jai";
 
 FREE : u32 : cast,no_check(u32) -1;
 
@@ -39,8 +40,7 @@ copy_and_shadow :: (array: *[]$T) #expand {
 }
 
 main :: () {
-  input := read_entire_file(#run replace(#file, ".jai", ".input"));
-  //input := "2333133121414131402";
+  input := fetch_puzzle_input();
   while input[input.count - 1] == #char "\n" input.count -= 1;
 
   PRINT := input.count < 40;

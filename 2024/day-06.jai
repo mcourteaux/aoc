@@ -4,6 +4,7 @@
 #import "Sort";
 #import "Math";
 #import "Thread";
+#load "AOC.jai";
 
 walk :: (lines_: []string, start_r: int, start_c: int, init_dir_x: int, init_dir_y: int) -> int, bool {
   lines := lines_;
@@ -72,7 +73,7 @@ walk :: (lines_: []string, start_r: int, start_c: int, init_dir_x: int, init_dir
 }
 
 main :: () {
-  input := read_entire_file(#run replace(#file, ".jai", ".input"));
+  input := fetch_puzzle_input();
   while input[input.count - 1] == #char "\n" input.count -= 1;
 
   input_part_1 := copy_string(input);
