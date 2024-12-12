@@ -4,4 +4,4 @@
 !*.sh
 !*/
 .build
-
+!.fdignore
