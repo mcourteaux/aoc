@@ -1,10 +1,17 @@
 #!/bin/bash
 
+echo "Compile all..."
 for src in day-*.jai ; do
-  echo
-  echo "================================================"
-  echo
+  jai -release $src &
+done
+
+wait
+
+for src in day-*.jai ; do
   src=$(basename "$src")
-  jai $src
-  ./${src%%.*}
+  exe=${src%%.*}
+  echo
+  echo "====================== ${exe} =========================="
+  echo
+  ./${exe}
 done
