@@ -6,10 +6,8 @@
 #load "AOC.jai";
 
 main :: () {
-  input := fetch_puzzle_input();
+  input := fetch_puzzle_input(true);
   //input := copy_string("AAAA\nBBCD\nBBCC\nEEEC");
-
-  while input[input.count - 1] == #char "\n" input.count -= 1;
   lines := split(input, "\n");
 
   labels : [27]u8;
@@ -24,13 +22,6 @@ main :: () {
     }
   }
   print("labels: %\n", labels);
-
-  Fence :: struct {
-    row: u16;
-    col: u16;
-    row_out_dir: s8;
-    col_out_dir: s8;
-  };
 
   Side :: struct {
     min_row : s16;

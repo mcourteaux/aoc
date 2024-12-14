@@ -1,4 +1,4 @@
-fetch_puzzle_input :: (year: int, day: int) -> string {
+fetch_puzzle_input :: (year: int, day: int, strip_trailing_newlines: bool) -> string {
   print("Fetching puzzle input for %/day-%\n", year, day);
   target := sprint("day-%.input", formatInt(day, minimum_digits=2));
   in_file, ok := file_open(target);
@@ -9,16 +9,20 @@ fetch_puzzle_input :: (year: int, day: int) -> string {
     ok = file_read(in_file, buffer, len);
     if ok {
       print("Read cached input from filesystem: %.\n", target);
-      return string.{len, buffer};
+      result := string.{len, buffer};
+      if strip_trailing_newlines {
+        while result[result.count - 1] == #char "\n" result.count -= 1;
+      }
+      return result;
     }
   }
 
   url := sprint("https://adventofcode.com/%/day/%/input", year, day);
   download(url, target);
-  return fetch_puzzle_input(year, day);
+  return fetch_puzzle_input(year, day, strip_trailing_newlines);
 }
 
-fetch_puzzle_input :: (loc := #caller_location) -> string #expand {
+fetch_puzzle_input :: (strip_trailing_newlines := false, loc := #caller_location) -> string #expand {
   year, day :: #run -> int, int {
     parts := parse_path(loc.fully_pathed_filename);
     year := string_to_int(parts.words[parts.words.count - 2]);
@@ -27,7 +31,7 @@ fetch_puzzle_input :: (loc := #caller_location) -> string #expand {
     print("year: %, day: %\n", year, day);
     return year, day;
   };
-  return fetch_puzzle_input(year, day);
+  return fetch_puzzle_input(year, day, strip_trailing_newlines);
 }
 
 #scope_file
@@ -46,6 +50,14 @@ write_callback :: (contents: *u8, count: u64, size: u64, file: *File) -> u64 #c_
   return total_size;
 }
 
+load_cookie :: () -> string {
+  cookie, ok := read_entire_file(".cookie");
+  if ok return cookie;
+  cookie, ok = read_entire_file("../.cookie");
+  assert(ok);
+  return cookie;
+}
+
 download :: (url: string, target: string) -> bool {
   // Init Curl and setup a deferred cleanup
   curl = curl_easy_init();
@@ -55,10 +67,12 @@ download :: (url: string, target: string) -> bool {
   }
   defer curl_easy_cleanup(curl);
 
+
   // Set target URL
   // Curl expect a null terminated string, since it's a C library.
   // We convert url to a c string, using temp_c_string (which uses a temporary allocator)
   curl_easy_setopt(curl, .URL, temp_c_string(url));
+  curl_easy_setopt(curl, .COOKIE, temp_c_string(load_cookie()));
 
   // Set output info
   out_file, ok := file_open(target, for_writing=true);
