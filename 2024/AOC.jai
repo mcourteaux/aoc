@@ -34,6 +34,24 @@ fetch_puzzle_input :: (strip_trailing_newlines := false, loc := #caller_location
   return fetch_puzzle_input(year, day, strip_trailing_newlines);
 }
 
+fetch_demo_puzzle_input :: (strip_trailing_newlines := false, demo_num := 0, loc := #caller_location) -> string #expand {
+  year, day :: #run -> int, int {
+    parts := parse_path(loc.fully_pathed_filename);
+    year := string_to_int(parts.words[parts.words.count - 2]);
+    fn := parts.words[parts.words.count - 1];
+    day := string_to_int(slice(fn, 4, 2));
+    print("year: %, day: %\n", year, day);
+    return year, day;
+  };
+  target := sprint("day-%.demo-input-%", formatInt(day, minimum_digits=2), demo_num);
+  result, ok := read_entire_file(target);
+  assert(ok, "Demo input reading failed: %s", target);
+  if strip_trailing_newlines {
+    while result[result.count - 1] == #char "\n" result.count -= 1;
+  }
+  return result;
+}
+
 #scope_file
 
 #import "File_Utilities";
