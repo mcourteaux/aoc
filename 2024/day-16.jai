@@ -141,7 +141,7 @@ main :: () {
     node := to_process[0];
     using node;
     array_unordered_remove_by_index(*to_process, 0);
-    print("Unwind node: %\n", <<node);
+    //print("Unwind node: %\n", <<node);
 
     if !counted {
       count += 1;
@@ -161,5 +161,54 @@ main :: () {
       }
     }
   }
+
+  // Find maximum best-cost per cell.
+  max_cost := 0;
+  for y : 0..h-1 {
+    for x : 0..w-1 {
+      n := grid[gi(y, x, 0)];
+      if !n.is_wall {
+        bc := n.cost;
+        for l : 1..3 {
+          bc = min(bc, grid[gi(y, x, l)].cost);
+        }
+        max_cost = max(max_cost, bc);
+      }
+    }
+  }
+
+
+  frac_to_col :: (frac: float) -> int, int, int {
+    if frac < 0.5 {
+      frac = frac * 2;
+      return xx (frac * 255), xx ((1.0 - frac) * 205), 0;
+    } else {
+      frac = (frac - 0.5) * 2;
+      return xx ((1.0 - frac) * 255), 0, xx (frac * 255);
+    }
+  }
+
+  print("\n\n");
+  for y : 0..h-1 {
+    print("   ");
+    for x : 0..w-1 {
+      n := grid[gi(y, x, 0)];
+      if n.is_wall {
+        //print("\e[41;31m##\e[0m");
+        print("\e[38:5:237m\e[48:5:237m##\e[0m");
+      } else {
+        bc := n.cost;
+        for l : 1..3 {
+          bc = min(bc, grid[gi(y, x, l)].cost);
+        }
+        frac := cast(float32) bc / max_cost;
+        r, g, b := frac_to_col(frac);
+        print("\e[48;2;%;%;%m%\e[0m", r, g, b, ifx n.counted "##" else "  ");
+      }
+    }
+    print("\n");
+  }
+  print("\n");
+
   print("Counted % positions along the best paths\n", count);
 }
