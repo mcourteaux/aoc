@@ -80,7 +80,7 @@ main :: () {
 
   array_add(*to_process, *grid[gi(start_r, start_c, start_l)]);
 
-  check_neigbor :: (this: *Node, dr : int, dc : int, layer: int) #expand {
+  check_neighbor :: (this: *Node, dr : int, dc : int, layer: int) #expand {
     nb := *grid[gi(this.r + dr, this.c + dc, layer)];
     if nb.is_wall return;
     cost := abs(dr) + abs(dc);
@@ -93,6 +93,7 @@ main :: () {
       nb.coming_from[0] = this;
       nb.coming_from[1] = null;
       nb.coming_from[2] = null;
+      nb.coming_from[3] = null;
       array_add(*to_process, nb);
     } else if new_cost == nb.cost {
       for cfi : 0..3 {
@@ -114,11 +115,11 @@ main :: () {
 
     // Check neighbor on own layer, which is only going forward in the current direction
     dr, dc := idx_to_delta(node.l);
-    check_neigbor(node,  dr, dc, node.l);
+    check_neighbor(node,  dr, dc, node.l);
 
     for layer : 0..3 {
       if layer != node.l {
-        check_neigbor(node, 0, 0, layer);
+        check_neighbor(node, 0, 0, layer);
       }
     }
   }
