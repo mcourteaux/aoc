@@ -160,7 +160,7 @@ backtrack_swap :: (gate_descs: []string, swaps: *[4]WireSwap, error: int, defaul
     return true;
   }
 
-  ERROR_RANGES ::  s64.[17,19,  22,30,  22,30,  39,44];
+  ERROR_RANGES ::  s64.[17,19,  22,30,  25,29,  39,45];
   elb := ERROR_RANGES[error * 2];
   eub := ERROR_RANGES[error * 2 + 1];
 
@@ -307,7 +307,8 @@ main :: () {
   // Part 2: Let's find which pairs to swap.
   swaps[0] = .{"z18", "hmt"}; // Correct!
   swaps[1] = .{"z27", "bfq"}; // Correct, I think (manually inspected)!
-  found_solution := backtrack_swap(gate_descs, *swaps, 1, default_wires);
+  swaps[2] = .{"z31", "hkh"}; // Correct, I think (manually inspected)!
+  found_solution := backtrack_swap(gate_descs, *swaps, 3, default_wires);
   print("Found solution: %  %\n", found_solution, swaps);
 
   // Stress test solution!
